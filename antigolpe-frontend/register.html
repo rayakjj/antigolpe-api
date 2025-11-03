@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiGolpe - Cadastrar</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="img/shield-icon.png" alt="Logo AntiGolpe"> <h1>AntiGolpe</h1>
+        </div>
+        <h2>Crie sua conta</h2>
+        <div id="error-message" class="error-message" style="display:none;"></div>
+        <div class="form-group">
+            <label for="firstname">Nome</label>
+            <input type="text" id="firstname" placeholder="Seu nome">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Sobrenome</label>
+            <input type="text" id="lastname" placeholder="Seu sobrenome">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="seu.email@exemplo.com">
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" placeholder="********">
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirmar Senha</label>
+            <input type="password" id="confirm-password" placeholder="********">
+        </div>
+        <button id="register-btn" class="btn">Cadastrar</button>
+        <a href="index.html" class="link">Já tem uma conta? Faça login</a>
+    </div>
+
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/register.js"></script>
+</body>
+</html>

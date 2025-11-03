@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiGolpe - Meus Cartões</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="cards-page-container">
+        <h2 style="text-align: left;">Meus Cartões</h2>
+        <button id="add-new-card-btn" class="btn" style="width: auto; padding: 10px 25px; margin-left: auto; display: block; margin-bottom: 25px;">Adicionar novo cartão</button>
+
+        <div id="cards-grid" class="cards-grid">
+            <p>Carregando cartões...</p>
+        </div>
+
+        <div id="add-card-form-container" class="container" style="display:none; margin-top: 50px; max-width: 500px;">
+            <h2>Adicionar Novo Cartão</h2>
+            <div id="add-card-error-message" class="error-message" style="display:none;"></div>
+            <div class="form-group">
+                <label for="new-card-bandeira">Bandeira (VISA, MASTERCARD)</label>
+                <input type="text" id="new-card-bandeira" placeholder="VISA">
+            </div>
+            <div class="form-group">
+                <label for="new-card-ultimos4Digitos">Últimos 4 Dígitos</label>
+                <input type="text" id="new-card-ultimos4Digitos" maxlength="4" placeholder="XXXX">
+            </div>
+            <div class="form-group">
+                <label for="new-card-nomeTitular">Nome do Titular</label>
+                <input type="text" id="new-card-nomeTitular" placeholder="Nome Completo">
+            </div>
+            <div class="form-group">
+                <label for="new-card-dataValidade">Data de Validade (MM/AA)</label>
+                <input type="text" id="new-card-dataValidade" placeholder="MM/AA" maxlength="5">
+            </div>
+            <button id="save-new-card-btn" class="btn">Salvar Cartão</button>
+            <button id="cancel-add-card-btn" class="btn" style="background-color: #4a5159;">Cancelar</button>
+        </div>
+
+        </main>
+
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/common.js"></script>
+    <script type="module" src="js/cards.js"></script>
+</body>
+</html>
