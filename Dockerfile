@@ -1,5 +1,5 @@
 # Estágio 1: Build (Compilar o Java com o Maven)
-FROM maven:3.8.8-eclipse-temurin-17-slim AS build
+FROM maven:3-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
