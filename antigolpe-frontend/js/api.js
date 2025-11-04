@@ -1,25 +1,22 @@
-// js/api.js
+// js/api.js (CORRIGIDO)
 const API_BASE_URL = 'https://antigolpe-api.onrender.com/api/v1';
 
+// Função auxiliar para fazer chamadas à API
 async function callApi(endpoint, method = 'GET', body = null, requiresAuth = true) {
-    const headers = {
-        'Content-Type': 'application/json',
+    
+    const config = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        }
     };
 
     if (requiresAuth) {
         const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            console.error('Nenhum token JWT encontrado. Redirecionando para login...');
-            window.location.href = 'index.html'; // Redireciona para o login
-            throw new Error('Unauthorized');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
-        headers['Authorization'] = `Bearer ${token}`;
     }
-
-    const config = {
-        method: method,
-        headers: headers,
-    };
 
     if (body) {
         config.body = JSON.stringify(body);
@@ -27,42 +24,60 @@ async function callApi(endpoint, method = 'GET', body = null, requiresAuth = tru
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
-    // Se a resposta for 204 No Content (como na deleção), não tenta parsear JSON
-    if (response.status === 204) {
-        return { status: 204 }; // Retorna um objeto indicando sucesso sem conteúdo
-    }
-
-    const data = await response.json();
-
+    // --- ESTA É A CORREÇÃO ---
+    // Verifica se a resposta foi bem-sucedida (status 200-299) ANTES de tentar ler o JSON
     if (!response.ok) {
-        // Se a resposta não for OK (ex: 400, 401, 500), joga um erro
-        const error = new Error(data.message || 'Erro na requisição');
+        // Se a resposta for 401, 403, 500 etc., ela pode não ter um corpo JSON.
+        // Nós criamos nosso próprio objeto de erro.
+        const errorMessage = response.status === 401 ? "Credenciais Inválidas" : `Erro ${response.status}`;
+        const error = new Error(errorMessage);
         error.status = response.status;
-        error.data = data;
+        
+        // Tenta ler a resposta como texto para ver se o backend deu mais detalhes
+        try {
+            error.data = await response.json(); 
+        } catch (e) {
+            error.data = { message: errorMessage };
+        }
+        
         throw error;
     }
+    // --- FIM DA CORREÇÃO ---
 
+    // Se a resposta for 204 No Content (como na deleção), não tenta parsear JSON
+    if (response.status === 204) {
+        return { status: 204 };
+    }
+
+    // Só tenta ler o JSON se tivermos certeza que a resposta foi OK (ex: 200)
+    const data = await response.json();
     return data;
 }
 
 // Funções específicas para o módulo de autenticação
 export const authApi = {
-    register: (firstname, lastname, email, password) => 
+    register: (firstname, lastname, email, password) =>
         callApi('/auth/register', 'POST', { firstname, lastname, email, password }, false), // Não requer autenticação
-    authenticate: (email, password) => 
+    authenticate: (email, password) =>
         callApi('/auth/authenticate', 'POST', { email, password }, false), // Não requer autenticação
 };
 
-// Funções específicas para o módulo de cartões
+// Funções para os cartões (protegidas)
 export const cardApi = {
-    getCards: () => callApi('/cards'),
-    addCard: (cardData) => callApi('/cards', 'POST', cardData),
-    deleteCard: (cardId) => callApi(`/cards/${cardId}`, 'DELETE', null, true), // Certifique-se que o token está indo para o DELETE
+    getCards: () =>
+        callApi('/cards', 'GET', null, true), // Requer autenticação
+    addCard: (cardData) =>
+        callApi('/cards', 'POST', cardData, true), // Requer autenticação
+    deleteCard: (cardId) =>
+        callApi(`/cards/${cardId}`, 'DELETE', null, true), // Requer autenticação
 };
 
-// Funções específicas para o módulo de transações
+// Funções para as transações (protegidas)
 export const transactionApi = {
-    getTransactionsByCard: (cardId) => callApi(`/transactions/cartao/${cardId}`),
-    getAllMyTransactions: () => callApi('/transactions'),
-    addTransaction: (cardId, transactionData) => callApi(`/transactions/cartao/${cardId}`, 'POST', transactionData),
+    getAllMyTransactions: () =>
+        callApi('/transactions', 'GET', null, true), // Requer autenticação
+    getTransactionsByCard: (cardId) =>
+        callApi(`/transactions/cartao/${cardId}`, 'GET', null, true), // Requer autenticação
+    addTransaction: (cardId, transactionData) =>
+        callApi(`/transactions/cartao/${cardId}`, 'POST', transactionData, true), // Requer autenticação
 };
