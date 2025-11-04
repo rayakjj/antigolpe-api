@@ -44,6 +44,7 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll() // Permite acesso a todos os endpoints de autenticação
+                        .requestMatchers("/health").permitAll()         // <-- ESTA É A NOVA LINHA QUE VOCÊ ADICIONOU
                         .anyRequest().authenticated() // Exige autenticação para qualquer outra requisição
                 )
                 .sessionManagement(session -> session
@@ -65,7 +66,7 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(Arrays.asList(
             "http://127.0.0.1:5500", 
             "http://localhost:5500",
-            "https://antigolpe-site.onrender.com/" // <-- A URL DO SEU FRONTEND NO RENDER
+            "https://antigolpe-site.onrender.com" // <-- A URL DO SEU FRONTEND NO RENDER (Corrigi a barra extra no final)
         ));
         // --- FIM DA MUDANÇA ---
         
