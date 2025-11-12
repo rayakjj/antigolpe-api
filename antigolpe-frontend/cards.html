@@ -9,38 +9,46 @@
 <body>
     <main>
         <div class="cards-page-container">
-            <h2>Meus Cartões</h2>
+            
+            <h2 style="text-align: left;">Meus Cartões</h2>
+
             <div id="cards-grid" class="cards-grid">
                 <p>Carregando cartões...</p>
                 </div>
+
             <div class="action-buttons">
                 <button id="add-new-card-btn" class="btn">Adicionar novo cartão</button>
             </div>
 
-            <div id="add-card-form-container" class="form-container" style="display:none;">
+            <div id="add-card-form-container" class="container" style="display:none; margin-top: 30px; max-width: 600px;">
                 <h3>Adicionar Novo Cartão</h3>
+                
                 <div class="form-group">
-                    <label for="new-card-bandeira">Bandeira:</label>
-                    <input type="text" id="new-card-bandeira" placeholder="Ex: VISA, MASTERCARD">
+                    <label for="new-card-bandeira">Bandeira (VISA, MASTERCARD, etc.)</label>
+                    <input type="text" id="new-card-bandeira" placeholder="VISA">
                 </div>
                 <div class="form-group">
-                    <label for="new-card-numero">Número do Cartão:</label>
-                    <input type="text" id="new-card-numero" placeholder="XXXX XXXX XXXX XXXX">
+                    <label for="new-card-numero">Número do Cartão</label>
+                    <input type="text" id="new-card-numero" placeholder="0000 0000 0000 0000" maxlength="19">
                 </div>
                 <div class="form-group">
-                    <label for="new-card-nomeTitular">Nome do Titular:</label>
-                    <input type="text" id="new-card-nomeTitular" placeholder="Nome Impresso no Cartão">
+                    <label for="new-card-nomeTitular">Nome do Titular (como no cartão)</label>
+                    <input type="text" id="new-card-nomeTitular" placeholder="JOAO R SILVA">
                 </div>
                 <div class="form-group">
-                    <label for="new-card-dataValidade">Data de Validade (MM/AA):</label>
-                    <input type="text" id="new-card-dataValidade" placeholder="MM/AA" maxlength="5">
+                    <label for="new-card-dataValidade">Data de Validade (MM/AA)</label>
+                    <input type="text" id="new-card-dataValidade" placeholder="12/29" maxlength="5">
                 </div>
+
                 <div id="add-card-error-message" class="error-message" style="display:none;"></div>
-                <button id="save-new-card-btn" class="btn">Salvar Cartão</button>
-                <button id="cancel-add-card-btn" class="btn secondary-btn">Cancelar</button>
+
+                <div class="action-buttons">
+                    <button id="save-new-card-btn" class="btn">Salvar Cartão</button>
+                    <button id="cancel-add-card-btn" class="btn" style="background-color: #555;">Cancelar</button>
+                </div>
             </div>
-        </div>
-    </main>
+
+        </div> </main>
 
     <script type="module" src="js/api.js"></script>
     <script type="module" src="js/auth.js"></script>
