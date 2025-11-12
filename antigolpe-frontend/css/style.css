@@ -7,23 +7,11 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-
-    /* --- INÍCIO DA MUDANÇA --- */
-    
-    /* Removemos o background-color e o background-image (dots) antigos */
-    
-    /* IMPORTANTE:
-      Troque 'figma-background.jpg' pelo nome exato da imagem que você baixou.
-      O caminho '../img/' sobe uma pasta (do /css) e entra na /img.
-    */
     background-image: url('../img/fundo-site.jpg');
-    
     background-size: cover; /* Faz a imagem cobrir a tela inteira */
     background-position: center center; /* Centraliza a imagem */
     background-repeat: no-repeat; /* Impede que a imagem se repita */
     background-attachment: fixed; /* Deixa a imagem fixa durante o scroll */
-    
-    /* --- FIM DA MUDANÇA --- */
 }
 
 .container {
@@ -37,22 +25,18 @@ body {
 }
 
 .logo-container {
-    /* --- NOVA MUDANÇA: Mais espaço abaixo do container da logo --- */
     margin-bottom: 35px; /* Era 30px */
 }
 
 .logo-container img {
-    /* --- NOVA MUDANÇA: Aumentei a altura da logo --- */
     height: 75px; /* Era 60px */
     vertical-align: middle;
-    /* --- NOVA MUDANÇA: Aumentei o espaçamento entre a imagem e o texto --- */
     margin-right: 15px; /* Era 10px */
 }
 
 .logo-container h1 {
     display: inline-block;
     color: #58a6ff; /* Cor azul do logo */
-    /* --- NOVA MUDANÇA: Aumentei o tamanho da fonte do texto "AntiGolpe" --- */
     font-size: 2.5em; /* Era 2.2em */
     font-weight: bold;
 }
@@ -139,8 +123,6 @@ h2 {
     top: 0;
     left: 0;
     z-index: 1000;
-    
-    /* --- MUDANÇA 2 (Parte A): Garante que o padding não aumente a largura total --- */
     box-sizing: border-box; 
 }
 
@@ -161,7 +143,6 @@ h2 {
 }
 
 .navbar .nav-links {
-    /* --- MUDANÇA 2 (Parte B): Faz com que os links centrais sejam flexíveis --- */
     flex-grow: 1; /* Permite que esta área cresça */
     text-align: center; /* Centraliza os links */
 }
@@ -169,7 +150,7 @@ h2 {
 .navbar .nav-links a {
     color: #e6edf3;
     text-decoration: none;
-    margin: 0 15px; /* Mudei de margin-left para margin 0 15px */
+    margin: 0 15px;
     font-size: 1em;
     transition: color 0.2s ease;
 }
@@ -187,8 +168,6 @@ h2 {
 .navbar .user-profile span {
     margin-right: 15px;
     color: #c9d1d9;
-
-    /* --- MUDANÇA 2 (Parte C): Corta emails longos --- */
     max-width: 200px; /* Define uma largura máxima para o nome */
     white-space: nowrap; /* Impede que quebre a linha */
     overflow: hidden; /* Esconde o que passar */
@@ -269,204 +248,4 @@ main {
     background-color: #0969da; /* Azul do cartão */
     border-radius: 8px;
     padding: 10px 15px;
-    font-size: 0.8em;
-    text-align: left;
-    min-width: 120px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.card-mini .card-flag {
-    font-weight: bold;
-    font-size: 0.9em;
-    margin-bottom: 5px;
-}
-
-.transaction-item {
-    background-color: #21262d;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.transaction-item .details {
-    text-align: left;
-}
-
-.transaction-item .details strong {
-    color: #e6edf3;
-}
-
-.transaction-item .details span {
-    display: block;
-    font-size: 0.8em;
-    color: #c9d1d9;
-    margin-top: 3px;
-}
-
-.transaction-item .amount {
-    font-weight: bold;
-    color: #58a6ff;
-    font-size: 1.1em;
-}
-
-/* Estilos específicos para a página de Meus Cartões */
-.cards-page-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 20px auto;
-    text-align: center;
-}
-
-.cards-page-container h2 {
-    font-size: 2em;
-    margin-bottom: 30px;
-}
-
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
-}
-
-.card-full {
-    background-color: #0969da; /* Azul do cartão */
-    border-radius: 12px;
-    padding: 20px;
-    color: white;
-    text-align: left;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    position: relative;
-}
-
-.card-full .card-flag {
-    font-size: 1.1em;
-    font-weight: bold;
-    text-align: right;
-    margin-bottom: 10px;
-}
-
-.card-full .chip {
-    width: 40px;
-    height: 30px;
-    background-color: #d1d1d1;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
-.card-full .card-number {
-    font-size: 1.5em;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-.card-full .card-holder-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9em;
-}
-
-.card-full .card-actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end; /* Alinha botões à direita */
-    gap: 10px;
-}
-
-.card-full .card-actions .btn-small {
-    padding: 8px 15px;
-    font-size: 0.9em;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.card-full .card-actions .btn-small:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Estilo para botões de ação na página de cartões (Editar/Remover) */
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.action-buttons .btn {
-    width: auto;
-    padding: 12px 30px;
-}
-
-/* Estilos para a página de Transações */
-.transactions-page-container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 20px auto;
-}
-
-.transactions-page-container h2 {
-    font-size: 2em;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.transactions-list {
-    margin-top: 20px;
-}
-
-.transaction-list-item {
-    background-color: #161b22;
-    padding: 18px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.transaction-list-item .details {
-    text-align: left;
-    flex-grow: 1;
-}
-
-.transaction-list-item .details strong {
-    color: #e6edf3;
-    font-size: 1.1em;
-}
-
-.transaction-list-item .details span {
-    display: block;
-    font-size: 0.9em;
-    color: #c9d1d9;
-    margin-top: 5px;
-}
-
-.transaction-list-item .amount {
-    font-weight: bold;
-    color: #58a6ff;
-    font-size: 1.3em;
-    text-align: right;
-}
-
-.transaction-list-item .amount.negative {
-    color: #ff7b72; /* Cor para valores negativos (débito) */
-}
-
-/* Estilo para o card de alerta "Seguro" (Azul) */
-.alert-safe {
-    background-color: #0d2847; /* Azul escuro */
-    border: 1px solid #58a6ff;
-}
-
-.alert-safe h3 {
-    color: #58a6ff; /* Texto do título em Azul */
-}
+    }
