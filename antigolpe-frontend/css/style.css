@@ -460,3 +460,13 @@ main {
 .transaction-list-item .amount.negative {
     color: #ff7b72; /* Cor para valores negativos (débito) */
 }
+
+/* Estilo para o card de alerta "Seguro" (Azul) */
+.alert-safe {
+    background-color: #0d2847; /* Azul escuro */
+    border: 1px solid #58a6ff;
+}
+
+.alert-safe h3 {
+    color: #58a6ff; /* Texto do título em Azul */
+}
