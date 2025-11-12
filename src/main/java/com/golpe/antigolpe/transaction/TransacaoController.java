@@ -1,8 +1,9 @@
 package com.golpe.antigolpe.transaction;
 
-import com.golpe.antigolpe.user.Cartao; // Precisamos do Cartao para associar a transação
-import com.golpe.antigolpe.user.CartaoRepository; // Para buscar o cartão
-import com.golpe.antigolpe.user.User; // Para o usuário logado
+import com.golpe.antigolpe.fraud.FraudDetectionService; // <-- 1. IMPORTA O NOVO SERVIÇO
+import com.golpe.antigolpe.user.Cartao;
+import com.golpe.antigolpe.user.CartaoRepository;
+import com.golpe.antigolpe.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -19,16 +21,16 @@ import java.util.Optional;
 public class TransacaoController {
 
     private final TransacaoRepository transacaoRepository;
-    private final CartaoRepository cartaoRepository; // Precisamos para verificar se o cartão pertence ao usuário
+    private final CartaoRepository cartaoRepository;
+    private final FraudDetectionService fraudService; // <-- 2. INJETA O NOVO SERVIÇO
 
-    // Endpoint para REGISTRAR uma nova transação
-    // Recebe o ID do cartão ao qual a transação pertence
+    // Endpoint para ADICIONAR uma nova transação a um cartão
     @PostMapping("/cartao/{cartaoId}")
-    public ResponseEntity<Transacao> addTransaction(
+    public ResponseEntity<Transacao> addTransactionToCard(
             @PathVariable Integer cartaoId,
-            @RequestBody Transacao transacao) {
-
-        User currentUser = getCurrentUser(); // Pega o usuário logado
+            @RequestBody Transacao transacao // O JSON vem aqui
+    ) {
+        User currentUser = getCurrentUser();
 
         // Verifica se o cartão existe e pertence ao usuário logado
         Optional<Cartao> optionalCartao = cartaoRepository.findById(cartaoId);
@@ -37,11 +39,15 @@ public class TransacaoController {
         }
 
         Cartao cartao = optionalCartao.get();
-        
-        transacao.setCartao(cartao); // Associa a transação ao cartão encontrado
-        transacao.setDataHora(LocalDateTime.now()); // Define a data/hora atual para a transação
-        transacao.setStatus("APROVADA"); // Status padrão (pode ser mais complexo futuramente)
-        
+        transacao.setCartao(cartao); // Associa a transação ao cartão
+        transacao.setDataHora(LocalDateTime.now()); // Define a data/hora atual
+
+        // --- 3. A GRANDE MUDANÇA ESTÁ AQUI ---
+        // Em vez de aprovar direto, perguntamos ao serviço de fraude
+        String status = fraudService.analyzeTransaction(transacao);
+        transacao.setStatus(status);
+        // --- FIM DA MUDANÇA ---
+
         Transacao savedTransacao = transacaoRepository.save(transacao);
         return ResponseEntity.ok(savedTransacao);
     }
@@ -49,37 +55,31 @@ public class TransacaoController {
     // Endpoint para LISTAR todas as transações de um cartão específico
     @GetMapping("/cartao/{cartaoId}")
     public ResponseEntity<List<Transacao>> getTransactionsByCard(@PathVariable Integer cartaoId) {
-        User currentUser = getCurrentUser(); // Pega o usuário logado
+        User currentUser = getCurrentUser();
 
-        // Verifica se o cartão existe e pertence ao usuário logado
+        // Verifica se o cartão existe e pertence ao usuário
         Optional<Cartao> optionalCartao = cartaoRepository.findById(cartaoId);
         if (optionalCartao.isEmpty() || !optionalCartao.get().getUser().getId().equals(currentUser.getId())) {
-            return ResponseEntity.notFound().build(); // Cartão não encontrado ou não pertence ao usuário
+            return ResponseEntity.notFound().build();
         }
 
-        Cartao cartao = optionalCartao.get();
-        List<Transacao> transactions = transacaoRepository.findByCartao(cartao);
-        return ResponseEntity.ok(transactions);
+        return ResponseEntity.ok(transacaoRepository.findByCartao(optionalCartao.get()));
     }
 
-    // Endpoint para LISTAR todas as transações de TODOS os cartões do usuário logado
-    // Útil para o "Histórico recente de Transações" do Dashboard
+    // Endpoint para LISTAR TODAS as transações do usuário logado
     @GetMapping
     public ResponseEntity<List<Transacao>> getAllMyTransactions() {
-        User currentUser = getCurrentUser(); // Pega o usuário logado
-        
-        // Busca todos os cartões do usuário
+        User currentUser = getCurrentUser();
         List<Cartao> userCards = cartaoRepository.findByUser(currentUser);
-        
+
         // Para cada cartão, busca suas transações e coleta em uma única lista
         List<Transacao> allTransactions = userCards.stream()
                 .flatMap(cartao -> transacaoRepository.findByCartao(cartao).stream())
-                .sorted((t1, t2) -> t2.getDataHora().compareTo(t1.getDataHora())) // Opcional: ordenar por data mais recente
-                .toList();
+                .sorted((t1, t2) -> t2.getDataHora().compareTo(t1.getDataHora())) // Ordena por data mais recente
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(allTransactions);
     }
-
 
     // Método auxiliar para pegar o usuário atualmente autenticado
     private User getCurrentUser() {
