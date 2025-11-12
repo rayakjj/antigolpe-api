@@ -33,7 +33,6 @@ public class Transacao {
     // Uma transação pertence a um cartão
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cartao_id") // Coluna na tabela 'transacao' que faz referência ao ID do cartão
-    @JsonIgnore // Importante para evitar loops infinitos e expor dados desnecessários
     private Cartao cartao;
 
     // Você pode adicionar um campo para detecção de fraude aqui futuramente
