@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AntiGolpe - Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
-    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiGolpe - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
-    <main class="dashboard-page-content">
-        <h2 style="text-align: left; padding-left: 20px;">Olá, <span id="user-name">Usuário</span>! Seu painel de segurança.</h2>
+    <main class="dashboard-page-content">
+        <h2 style="text-align: left; padding-left: 20px;">Olá, <span id="user-name">Usuário</span>! Seu painel de segurança.</h2>
 
-        <div class="dashboard-grid">
-            <div class="dashboard-card alert-card">
-                <h3>ALERTA!!</h3>
-                <p id="alert-message">Nenhuma transação suspeita detectada recentemente.</p>
-                <button id="revisar-btn" class="btn" style="display:none;">Revisar</button>
-            </div>
+        <div class="dashboard-grid">
+            
+            <div id="alert-card" class="dashboard-card alert-card">
+                <h3>ALERTA!!</h3>
+                <p id="alert-message">Nenhuma transação suspeita detectada recentemente.</p>
+                                <button id="revisar-btn" class="btn" style="display:none;">Revisar</button>
+            </div>
 
-            <div class="dashboard-card">
-                <h3>Resumo de Cartões</h3>
-                <div id="cards-summary" class="card-preview">
-                    <p>Carregando cartões...</p>
-                </div>
-                <button id="add-new-card-btn" class="btn">Adicionar Novo Cartão</button>
-            </div>
-        </div>
+            <div class="dashboard-card">
+                <h3>Resumo de Cartões</h3>
+                <div id="cards-summary" class="card-preview">
+                    <p>Carregando cartões...</p>
+                </div>
+                <button id="add-new-card-btn" class="btn">Adicionar Novo Cartão</button>
+            </div>
+        </div>
 
-        <div class="dashboard-card" style="margin-top: 25px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 25px;">
-            <h3>Histórico Recente de Transações</h3>
-            <div id="recent-transactions" class="transactions-list">
-                <p>Carregando transações...</p>
-            </div>
-            <button id="view-all-transactions-btn" class="btn" style="width: auto; padding: 10px 25px;">Ver todas as Transações</button>
-        </div>
-    </main>
+        <div class="dashboard-card" style="margin-top: 25px; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 25px;">
+            <h3>Histórico Recente de Transações</h3>
+            <div id="recent-transactions" class="transactions-list">
+                <p>Carregando transações...</p>
+            </div>
+            <button id="view-all-transactions-btn" class="btn" style="width: auto; padding: 10px 25px;">Ver todas as Transações</button>
+        </div>
+    </main>
 
-    <script type="module" src="js/api.js"></script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/common.js"></script>
-    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/common.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
 </body>
 </html>
