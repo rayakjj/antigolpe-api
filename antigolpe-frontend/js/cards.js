@@ -18,7 +18,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addCardErrorMessageDiv = document.getElementById('add-card-error-message');
 
     const newCardBandeira = document.getElementById('new-card-bandeira');
-    const newCardUltimos4Digitos = document.getElementById('new-card-ultimos4Digitos');
+    
+    // --- MUDANÇA 1: Mudar a variável para pegar o ID do novo campo ---
+    // (Presume que o ID no seu HTML é 'new-card-numero')
+    const newCardNumero = document.getElementById('new-card-numero'); 
+    
     const newCardNomeTitular = document.getElementById('new-card-nomeTitular');
     const newCardDataValidade = document.getElementById('new-card-dataValidade');
 
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                             <div class="card-actions">
                                 <button class="btn-small btn-delete-card" data-card-id="${card.id}">Remover</button>
-                                </div>
+                            </div>
                         </div>
                     `;
                     cardsGridElement.insertAdjacentHTML('beforeend', cardHtml);
@@ -82,9 +86,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         addCardBtn.style.display = 'none'; // Esconde o botão "Adicionar"
         cardsGridElement.style.display = 'none'; // Esconde a lista de cartões
         addCardErrorMessageDiv.style.display = 'none';
-        // Limpa os campos
+        
+        // --- MUDANÇA 2: Limpar o campo de número completo ---
         newCardBandeira.value = '';
-        newCardUltimos4Digitos.value = '';
+        newCardNumero.value = ''; // Limpa o campo de número do cartão
         newCardNomeTitular.value = '';
         newCardDataValidade.value = '';
     });
@@ -98,22 +103,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Lógica para salvar novo cartão
     saveNewCardBtn.addEventListener('click', async () => {
         const bandeira = newCardBandeira.value.toUpperCase();
-        const ultimos4Digitos = newCardUltimos4Digitos.value;
+        
+        // --- MUDANÇA 3: Pega o número completo e remove espaços ---
+        const fullCardNumber = newCardNumero.value.replace(/\s/g, ''); // Remove espaços em branco
+        
         const nomeTitular = newCardNomeTitular.value.toUpperCase();
         const dataValidade = newCardDataValidade.value;
 
         addCardErrorMessageDiv.style.display = 'none';
 
-        if (!bandeira || !ultimos4Digitos || !nomeTitular || !dataValidade) {
+        // --- MUDANÇA 4: Atualiza a validação ---
+        if (!bandeira || !fullCardNumber || !nomeTitular || !dataValidade) {
             addCardErrorMessageDiv.textContent = 'Por favor, preencha todos os campos.';
             addCardErrorMessageDiv.style.display = 'block';
             return;
         }
-        if (ultimos4Digitos.length !== 4 || isNaN(ultimos4Digitos)) {
-             addCardErrorMessageDiv.textContent = 'Os últimos 4 dígitos devem ser 4 números.';
+        
+        // Validação simples de número de cartão (13 a 19 dígitos, apenas números)
+        if (fullCardNumber.length < 13 || fullCardNumber.length > 19 || isNaN(fullCardNumber)) {
+            addCardErrorMessageDiv.textContent = 'Por favor, insira um número de cartão válido.';
             addCardErrorMessageDiv.style.display = 'block';
             return;
         }
+        
         // Validação MM/AA (básica)
         const dateRegex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
         if (!dateRegex.test(dataValidade)) {
@@ -122,6 +134,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        // --- MUDANÇA 5: O "TRUQUE" - Extrai só os últimos 4 dígitos ---
+        const ultimos4Digitos = fullCardNumber.slice(-4);
+
+        // Enviamos apenas os dados seguros para o backend
         const cardData = { bandeira, ultimos4Digitos, nomeTitular, dataValidade };
 
         try {
