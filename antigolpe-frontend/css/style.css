@@ -129,6 +129,7 @@ h2 {
 .navbar .logo-nav {
     display: flex;
     align-items: center;
+    flex-shrink: 0; /* Impede que a logo encolha */
 }
 
 .navbar .logo-nav img {
@@ -193,6 +194,9 @@ main {
     width: 100%;
     max-width: 1200px; /* Largura máxima para o conteúdo */
     padding-bottom: 30px;
+    /* Adicionado para centralizar o conteúdo da página */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Estilos específicos para o Dashboard */
@@ -291,23 +295,15 @@ main {
     font-size: 1.1em;
 }
 
-/* --- 
---- INÍCIO DA CORREÇÃO DE LEGIBILIDADE
---- 
-*/
-
 /* Estilos específicos para a página de Meus Cartões */
 .cards-page-container {
     padding: 25px;
     max-width: 1200px;
     margin: 20px auto;
     text-align: center;
-
-    /* --- ADIÇÕES PARA LEGIBILIDADE (LIMPO) --- */
     background-color: #161b22;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    /* --- FIM DAS ADIÇÕES --- */
 }
 
 .cards-page-container h2 {
@@ -400,12 +396,9 @@ main {
     padding: 25px;
     max-width: 1000px;
     margin: 20px auto;
-
-    /* --- ADIÇÕES PARA LEGIBILIDADE (LIMPO) --- */
     background-color: #161b22;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    /* --- FIM DAS ADIÇÕES --- */
 }
 
 .transactions-page-container h2 {
@@ -419,7 +412,7 @@ main {
 }
 
 .transaction-list-item {
-    background-color: #161b22;
+    background-color: #21262d; /* Um pouco mais claro que o card */
     padding: 18px;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -465,4 +458,131 @@ main {
 
 .alert-safe h3 {
     color: #58a6ff; /* Texto do título em Azul */
+}
+
+
+/* =====================================================
+--- INÍCIO DAS NOVAS REGRAS DE RESPONSIVIDADE ---
+=====================================================
+*/
+
+/* --- Estilos para o Menu Hamburger (Começa escondido) --- */
+
+.hamburger-menu {
+    display: none; /* Escondido no Desktop */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none; /* Escondido no Desktop */
+    position: fixed;
+    top: 73px; /* Altura do navbar */
+    left: 0;
+    width: 100%;
+    background-color: #161b22;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    padding: 10px 0;
+}
+
+.mobile-menu a {
+    display: block;
+    color: #e6edf3;
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 15px 30px;
+    border-bottom: 1px solid #30363d;
+}
+
+.mobile-menu a:hover {
+    background-color: #21262d;
+}
+
+.mobile-menu .mobile-user-info {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+.mobile-menu .mobile-user-info a {
+    display: inline-block;
+    color: #ff7b72; /* Cor de "Sair" */
+    font-weight: bold;
+    padding: 0;
+    border: none;
+}
+
+/* Quando o menu está aberto */
+.mobile-menu.open {
+    display: block;
+}
+
+
+/* --- A MÁGICA: Media Query para Telas Pequenas (Celulares) --- 
+Abaixo de 768px, estas regras serão aplicadas
+*/
+@media (max-width: 768px) {
+
+    /* 1. Esconde os links do Navbar de Desktop */
+    .navbar .nav-links {
+        display: none;
+    }
+    .navbar .user-profile {
+        display: none;
+    }
+
+    /* 2. Mostra o botão Hamburger */
+    .hamburger-menu {
+        display: block;
+    }
+
+    /* 3. Ajusta o padding do container de login/registro */
+    .container {
+        padding: 20px 20px;
+        width: 90%;
+    }
+
+    /* 4. Ajusta o logo da tela de login */
+    .logo-container {
+        margin-bottom: 25px;
+    }
+    .logo-container img {
+        height: 60px; /* Um pouco menor no celular */
+        margin-right: 10px;
+    }
+    .logo-container h1 {
+        font-size: 2em; /* Um pouco menor no celular */
+    }
+
+    /* 5. Ajusta o padding dos cards do dashboard */
+    .dashboard-grid {
+        padding: 0 10px;
+        margin-top: 20px;
+    }
+    .dashboard-card {
+        padding: 20px;
+    }
+
+    /* 6. Ajusta o padding dos containers de página */
+    main {
+        padding-top: 75px; /* Altura do navbar */
+        padding-bottom: 20px;
+    }
+    .cards-page-container,
+    .transactions-page-container {
+        padding: 20px 15px;
+        margin: 15px auto;
+    }
+
+    /* 7. Ajusta o tamanho do card de cartão */
+    .cards-grid {
+        grid-template-columns: 1fr; /* Força 1 coluna no celular */
+        padding: 0 10px;
+    }
 }
